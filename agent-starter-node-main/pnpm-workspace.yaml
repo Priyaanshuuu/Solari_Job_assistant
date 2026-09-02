@@ -1,5 +1,4 @@
 allowBuilds:
   '@livekit/local-inference': true
-  esbuild: set this to true or false
   protobufjs: true
   sharp: true
