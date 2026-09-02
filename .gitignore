@@ -1,0 +1,45 @@
+# Root .gitignore
+node_modules/
+.next/
+dist/
+build/
+*.log
+.DS_Store
+.env
+.env.local
+.env.*.local
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.pem
+*.key
+*.cert
+.turbo/
+coverage/
+.turbo
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Temp files
+tmp/
+temp/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Dependencies
+pnpm-lock.yaml
+package-lock.json
+yarn.lock

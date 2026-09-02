@@ -1,0 +1,132 @@
+# Your Resume (Structured Data)
+# This is the source of truth. The agent will tailor this for each job.
+# NOTE: Be completely honest. Never invent skills or projects.
+
+name: "Your Name"
+email: "your.email@example.com"
+phone: "+1-555-123-4567"
+location: "San Francisco, CA"
+website: "https://yourwebsite.com"
+linkedin: "https://linkedin.com/in/yourprofile"
+github: "https://github.com/yourprofile"
+
+# Professional Summary
+summary: |
+  Full-stack engineer with 5+ years building scalable web applications.
+  Passionate about developer experience, open-source, and mentoring junior engineers.
+  Expertise in TypeScript, React, Node.js, and cloud infrastructure.
+
+# Core Skills (Grouped)
+skills:
+  languages:
+    - TypeScript
+    - JavaScript
+    - Python
+    - SQL
+    - HTML/CSS
+  frontend:
+    - React
+    - Next.js
+    - Vue.js
+    - Tailwind CSS
+    - Redux / Zustand
+  backend:
+    - Node.js
+    - Express
+    - Fastify
+    - GraphQL
+    - REST APIs
+  infrastructure:
+    - AWS (EC2, S3, Lambda, RDS)
+    - Docker
+    - Kubernetes
+    - PostgreSQL
+    - Redis
+    - GitHub Actions
+  other:
+    - Git
+    - CI/CD
+    - Testing (Jest, Vitest)
+    - System Design
+
+# Work Experience
+experience:
+  - company: "Tech Company A"
+    title: "Senior Software Engineer"
+    location: "San Francisco, CA"
+    start_date: "2023-01"
+    end_date: null  # null means current role
+    bullets:
+      - "Led the migration of monolithic backend to microservices, reducing deployment time by 60%"
+      - "Mentored 3 junior engineers, resulting in 2 promotions in 18 months"
+      - "Architected real-time messaging system handling 100k+ concurrent users using WebSockets and Redis"
+      - "Implemented comprehensive observability stack (Datadog, Sentry) reducing MTTR by 40%"
+
+  - company: "Tech Company B"
+    title: "Full Stack Engineer"
+    location: "Remote"
+    start_date: "2021-03"
+    end_date: "2023-01"
+    bullets:
+      - "Built and launched customer-facing dashboard (React/Next.js) used by 50k+ users"
+      - "Redesigned API layer, improving query performance by 75% and reducing infrastructure costs"
+      - "Established testing culture, increasing code coverage from 20% to 85%"
+      - "Owned end-to-end feature delivery for payment processing integration (Stripe)"
+
+  - company: "Startup C"
+    title: "Junior Full Stack Developer"
+    location: "Remote"
+    start_date: "2019-06"
+    end_date: "2021-03"
+    bullets:
+      - "Built core product features in React and Node.js from ideation to production"
+      - "Contributed to open-source libraries, gained 500+ GitHub stars"
+      - "Implemented automated testing and CI/CD pipelines, reducing bugs in production by 50%"
+
+# Education
+education:
+  - school: "University Name"
+    degree: "Bachelor of Science"
+    major: "Computer Science"
+    graduation_year: 2019
+    gpa: "3.7"
+    # Optional: notable courses, achievements
+    achievements:
+      - "Dean's List"
+      - "Hackathon Winner (2019)"
+
+# Projects / Portfolio
+projects:
+  - name: "Open Source Project X"
+    description: "A full-featured TypeScript library for real-time data sync"
+    url: "https://github.com/yourprofile/project-x"
+    highlights:
+      - "1.2k GitHub stars, 50+ monthly downloads"
+      - "Maintained active community with 20+ contributors"
+      - "Comprehensive documentation and examples"
+
+  - name: "Personal Dashboard"
+    description: "Real-time dashboard for personal productivity tracking"
+    url: "https://dashboard.example.com"
+    highlights:
+      - "Built with Next.js, Postgres, and AWS Lambda"
+      - "Handles 1k+ events/minute with sub-100ms latency"
+      - "Used daily by 50+ beta users"
+
+# Certifications (if any)
+certifications:
+  - name: "AWS Certified Solutions Architect - Associate"
+    issued_date: "2022-06"
+    expiry_date: "2025-06"
+
+# Languages
+languages:
+  - name: "English"
+    proficiency: "Native"
+  - name: "Spanish"
+    proficiency: "Conversational"
+
+# Optional: Achievements / Awards
+achievements:
+  - "Employee of the Quarter (Q3 2023)"
+  - "Shipped 3 major features that increased revenue by 20%"

@@ -1,17 +1,27 @@
 {
-  "name": "web",
+  "name": "@job-copilot/web",
   "version": "0.1.0",
+  "description": "Next.js frontend for Job Copilot",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint . --ext .ts,.tsx",
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "clean": "rm -rf .next"
   },
   "dependencies": {
+    "@livekit/components-react": "^1.2.0",
+    "@livekit/components-styles": "^1.2.0",
+    "livekit-client": "^1.2.0",
+    "@job-copilot/lib-ts": "workspace:*",
     "next": "16.3.4",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "tailwindcss": "^4",
+    "axios": "^1.7.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -20,7 +30,8 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0"
   }
 }

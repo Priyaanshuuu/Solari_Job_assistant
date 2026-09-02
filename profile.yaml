@@ -1,0 +1,67 @@
+# Your professional profile
+# Used by the agent to filter job postings
+
+# Personal Info
+name: "Your Name"
+email: "your.email@example.com"
+phone: "+1-555-123-4567"
+location:
+  city: "San Francisco"
+  state: "CA"
+  country: "USA"
+  willing_to_relocate: false
+
+# Job Preferences
+desired_roles:
+  - "Software Engineer"
+  - "Full Stack Developer"
+  - "Platform Engineer"
+
+desired_locations:
+  - "San Francisco, CA"
+  - "Remote"
+  - "New York, NY"
+
+min_salary: 150000
+max_salary: 250000
+salary_currency: "USD"
+
+# Experience Level
+years_of_experience: 5
+experience_level: "mid"  # junior, mid, senior, staff
+
+# Tech Stack
+preferred_tech_stack:
+  - "TypeScript"
+  - "React"
+  - "Node.js"
+  - "Postgres"
+  - "AWS"
+
+# Keywords to highlight in searches
+priority_keywords:
+  - "startups"
+  - "remote"
+  - "equity"
+  - "learning"
+
+# Keywords to exclude (filter these out)
+exclude_keywords:
+  - "contractor"
+  - "part-time"
+  - "unpaid internship"
+  - "visa_sponsorship_not_available"
+
+# Job board preferences
+ats_boards:
+  - name: "greenhouse"
+    slug: "boards.greenhouse.io"
+  - name: "lever"
+    slug: "jobs.lever.co"
+  - name: "ashby"
+    slug: "jobs.ashby.com"
+  - name: "workable"
+    slug: "apply.workable.com"
+
+# Resume
+resume_file: "./resume.yaml"

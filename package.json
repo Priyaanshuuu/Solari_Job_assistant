@@ -1,0 +1,23 @@
+{
+  "name": "job-copilot-solari",
+  "version": "0.1.0",
+  "description": "Voice-first job search automation with resume tailoring",
+  "private": true,
+  "workspaces": [
+    "agent-starter-node",
+    "web",
+    "lib-ts"
+  ],
+  "scripts": {
+    "dev": "pnpm -r dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "type-check": "pnpm -r type-check",
+    "clean": "pnpm -r clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
