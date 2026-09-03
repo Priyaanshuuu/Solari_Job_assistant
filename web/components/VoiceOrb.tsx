@@ -5,8 +5,43 @@
 
 "use client";
 
-import { useRef, useState } from "react";
-import { useLocalParticipant, useDataChannel } from "@livekit/components-react";
+import { useEffect, useRef, useState } from "react";
+
+interface SpeechRecognitionResultEvent extends Event {
+  results: {
+    [index: number]: {
+      [index: number]: { transcript: string };
+      isFinal: boolean;
+    };
+    length: number;
+  };
+}
+
+interface SpeechRecognitionErrorEvent extends Event {
+  error: string;
+}
+
+interface SpeechRecognitionInstance {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onend: (() => void) | null;
+  onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
+  onresult: ((event: SpeechRecognitionResultEvent) => void) | null;
+  start: () => void;
+  stop: () => void;
+}
+
+interface SpeechRecognitionConstructor {
+  new (): SpeechRecognitionInstance;
+}
+
+declare global {
+  interface Window {
+    SpeechRecognition?: SpeechRecognitionConstructor;
+    webkitSpeechRecognition?: SpeechRecognitionConstructor;
+  }
+}
 
 interface VoiceOrbProps {
   isListening: boolean;
@@ -14,6 +49,7 @@ interface VoiceOrbProps {
   onStop: () => void;
   onTranscript: (text: string) => void;
   onResults: (results: any[]) => void;
+  onError: (message: string) => void;
 }
 
 export default function VoiceOrb({
@@ -21,35 +57,54 @@ export default function VoiceOrb({
   onStart,
   onStop,
   onTranscript,
-  onResults,
+  onError,
 }: VoiceOrbProps) {
-  const mediaStreamRef = useRef<MediaStream | null>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
+  const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
   const [isRecording, setIsRecording] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      recognitionRef.current?.stop();
+    };
+  }, []);
 
   const handleClick = async () => {
     if (!isRecording) {
-      // Start recording
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaStreamRef.current = stream;
-        setIsRecording(true);
-        onStart();
+      const Recognition = window.SpeechRecognition ?? window.webkitSpeechRecognition;
 
-        // TODO: Send audio to LiveKit agent
-      } catch (error) {
-        console.error("Microphone access denied:", error);
+      if (!Recognition) {
+        onError("Speech recognition is unavailable in this browser. Try Chrome or Edge.");
+        return;
       }
+
+      const recognition = new Recognition();
+      recognition.continuous = false;
+      recognition.interimResults = true;
+      recognition.lang = "en-US";
+      recognition.onresult = (event) => {
+        const transcript = Array.from({ length: event.results.length }, (_, index) =>
+          event.results[index][0].transcript,
+        ).join(" ");
+        onTranscript(transcript.trim());
+      };
+      recognition.onerror = (event) => {
+        setIsRecording(false);
+        onStop();
+        onError(event.error === "not-allowed" ? "Microphone access was denied." : "We could not hear that. Please try again.");
+      };
+      recognition.onend = () => {
+        setIsRecording(false);
+        onStop();
+      };
+
+      recognitionRef.current = recognition;
+      setIsRecording(true);
+      onStart();
+      recognition.start();
     } else {
-      // Stop recording
-      if (mediaStreamRef.current) {
-        mediaStreamRef.current.getTracks().forEach((track) => track.stop());
-        mediaStreamRef.current = null;
-      }
+      recognitionRef.current?.stop();
       setIsRecording(false);
       onStop();
-
-      // TODO: Process audio with agent
     }
   };
 
@@ -58,21 +113,24 @@ export default function VoiceOrb({
       {/* Voice Orb Button */}
       <button
         onClick={handleClick}
-        className={`w-24 h-24 rounded-full transition-all duration-200 flex items-center justify-center text-4xl ${
+        type="button"
+        aria-label={isRecording ? "Stop listening" : "Start listening"}
+        aria-pressed={isRecording}
+        className={`flex h-28 w-28 items-center justify-center rounded-full text-3xl transition-all duration-200 ${
           isRecording
-            ? "bg-red-600 shadow-lg shadow-red-600/50 scale-110"
-            : "bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/30"
+            ? "scale-105 bg-[#ee7655] shadow-lg shadow-[#ee7655]/30"
+            : "bg-[#75d19b] shadow-lg shadow-[#75d19b]/20 hover:scale-105"
         }`}
       >
-        🎤
+        {isRecording ? "■" : "●"}
       </button>
 
       {/* Status Text */}
       <div className="text-sm font-medium">
         {isRecording ? (
-          <span className="text-red-400 animate-pulse">🔴 Recording...</span>
+          <span className="animate-pulse text-[#ee7655]">Listening...</span>
         ) : (
-          <span className="text-slate-400">Click to speak</span>
+          <span className="text-[#aebbb5]">Tap to speak</span>
         )}
       </div>
     </div>

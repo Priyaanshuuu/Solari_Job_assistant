@@ -5,7 +5,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import VoiceOrb from "@/components/VoiceOrb";
 import TranscriptPanel from "@/components/TranscriptPanel";
 import ResultsCard from "@/components/ResultsCard";
@@ -15,6 +15,12 @@ export default function CopilotPage() {
   const [transcript, setTranscript] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
+  const [status, setStatus] = useState("Ready for your next search.");
+
+  const handleQuickAction = (prompt: string) => {
+    setTranscript(prompt);
+    setStatus("Request ready. Use the microphone to send it.");
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white p-8">
@@ -41,18 +47,19 @@ export default function CopilotPage() {
                   onStop={() => setIsListening(false)}
                   onTranscript={setTranscript}
                   onResults={setResults}
+                  onError={(message) => setStatus(message)}
                 />
               </div>
 
               {/* Quick Actions */}
               <div className="space-y-2">
-                <button className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium transition">
+                <button onClick={() => handleQuickAction("Find new backend roles in my preferred locations.")} className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium transition">
                   Find New Jobs
                 </button>
-                <button className="w-full py-2 px-4 bg-green-600 hover:bg-green-700 rounded-lg text-sm font-medium transition">
+                <button onClick={() => handleQuickAction("Tailor my resume for the selected job.")} className="w-full py-2 px-4 bg-green-600 hover:bg-green-700 rounded-lg text-sm font-medium transition">
                   Tailor Resume
                 </button>
-                <button className="w-full py-2 px-4 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm font-medium transition">
+                <button onClick={() => setStatus("Your saved opportunities will appear here after the first search.")} className="w-full py-2 px-4 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm font-medium transition">
                   View Results
                 </button>
               </div>
@@ -92,9 +99,7 @@ export default function CopilotPage() {
               {/* Status Message */}
               {!results.length && !transcript && (
                 <div className="bg-slate-800 rounded-lg p-8 border border-slate-700 text-center">
-                  <p className="text-slate-400">
-                    Click the microphone and ask: "Find me new backend jobs in SF"
-                  </p>
+                  <p className="text-slate-400">{status}</p>
                 </div>
               )}
             </div>
