@@ -88,10 +88,7 @@ Voice Input
 
 ## Production Deployment
 
-See `agent/Dockerfile` for containerized deployment to:
-- Render, Railway, Fly.io (LiveKit agent)
-- Vercel (web frontend)
-- Database hosted on Neon or AWS RDS
+Deploy the agent directly on Render, Railway, or Fly.io, and deploy the web frontend to Vercel, Netlify, or another Node.js-compatible host. Use a managed PostgreSQL provider such as Neon or AWS RDS.
 
 ---
 

@@ -19,7 +19,7 @@ Complete LiveKit voice agent with:
 - ✅ Session state management
 - ✅ Comprehensive error handling & logging
 
-**Files created**: 14 TypeScript files + Dockerfile + tests
+**Files created**: 14 TypeScript files + tests
 
 ### 🎨 **Web Frontend** (`web/`)
 Next.js React application with:
@@ -50,8 +50,7 @@ Isolated execution environments:
 
 ### 📚 **Configuration & Docs**
 - ✅ Complete `.env.example` with all required variables
-- ✅ `docker-compose.yml` for local PostgreSQL + Redis
-- ✅ Dockerfile for agent containerization
+- ✅ External PostgreSQL + Redis configuration documented
 - ✅ ESLint + Prettier configuration
 - ✅ Vitest setup for unit testing
 - ✅ Root `tsconfig.json` with workspace paths
@@ -178,7 +177,6 @@ sandbox-scripts/
 ├── tsconfig.json                (Root TS config)
 ├── vitest.config.ts             (Testing)
 ├── eslint.config.ts             (Linting)
-├── docker-compose.yml           (Local DB)
 ├── .prettierrc                  (Formatting)
 ├── .gitignore                   (Git rules)
 ├── profile.yaml                 (User template)
@@ -259,7 +257,7 @@ sandbox-scripts/
 - ✅ Complete frontend UI
 - ✅ Complete database schema
 - ✅ Python sandbox scripts
-- ✅ Docker configuration
+- ✅ Direct Node.js deployment configuration
 - ✅ Development guides
 - ✅ Comprehensive documentation
 

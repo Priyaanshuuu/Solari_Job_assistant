@@ -7,7 +7,7 @@
 - [x] TypeScript configuration complete
 - [x] ESLint setup complete
 - [x] Vitest configured
-- [x] Docker configuration ready
+- [x] Direct Node.js deployment configuration ready
 - [x] All dependencies listed in package.json files
 - [x] Monorepo structure verified
 
@@ -37,9 +37,6 @@ cp .env.example .env
 
 **3. Database Setup**
 ```bash
-# Start local PostgreSQL (using docker-compose)
-docker-compose up -d postgres
-
 # Run Prisma migrations
 pnpm -F lib-db prisma migrate dev --name init
 
@@ -98,14 +95,14 @@ pnpm type-check
 # Lint
 pnpm lint
 
-# Build Docker image
-docker build -f agent/Dockerfile -t job-copilot-agent:latest .
+# Validate the agent package
+pnpm --filter agent-starter-node typecheck
 ```
 
 - [ ] All builds successful
 - [ ] All tests pass
 - [ ] No linting errors
-- [ ] Docker image builds successfully
+- [ ] Agent package checks successfully
 - [ ] All environment variables set
 - [ ] Database migrations applied (via `prisma migrate deploy`)
 
@@ -165,7 +162,6 @@ pnpm -F web start
 - [x] `src/solari/pipeline.ts` - Job discovery
 - [x] `src/solari/resume-pipeline.ts` - Resume flow
 - [x] `package.json` - Dependencies
-- [x] `Dockerfile` - Container config
 - [x] `tsconfig.json` - TypeScript config
 - [x] `agent.test.ts` - Tests
 
@@ -198,8 +194,6 @@ pnpm -F web start
 - [x] `vitest.config.ts` - Testing
 - [x] `.prettierrc` - Formatting
 - [x] `.gitignore` - Git rules
-- [x] `docker-compose.yml` - Local DB
-- [x] `.dockerignore` - Docker ignore
 - [x] `profile.yaml` - User template
 - [x] `resume.yaml` - Resume template
 
@@ -242,10 +236,6 @@ pnpm -F lib-db prisma studio          # Open Prisma Studio
 pnpm -F lib-db prisma migrate dev     # Create migration
 pnpm -F lib-db prisma migrate deploy  # Apply migration
 
-# Docker
-docker-compose up -d     # Start local DB
-docker-compose down      # Stop local DB
-docker build -f agent/Dockerfile -t job-copilot-agent .
 ```
 
 ---
@@ -261,7 +251,6 @@ pnpm install --no-frozen-lockfile
 ```bash
 # Check DATABASE_URL in .env
 # Ensure PostgreSQL is running
-docker-compose up -d postgres
 ```
 
 ### Type errors after Prisma changes

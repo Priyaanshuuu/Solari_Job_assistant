@@ -27,7 +27,6 @@ job-copilot-solari/
 │   │       ├── job-board-parsers.ts # Board-specific HTML parsing
 │   │       ├── pipeline.ts         # Job discovery pipeline
 │   │       └── resume-pipeline.ts  # Resume tailoring pipeline
-│   ├── Dockerfile                  # Production container
 │   ├── package.json                # Dependencies
 │   └── tsconfig.json
 │
@@ -63,7 +62,6 @@ job-copilot-solari/
 ├── profile.yaml                     # User profile template
 ├── resume.yaml                      # Resume structured data
 ├── .env.example                     # Environment variable template
-├── docker-compose.yml               # Local dev database
 ├── package.json                     # Workspace root
 ├── pnpm-workspace.yaml              # Monorepo config
 ├── tsconfig.json                    # Root TypeScript config
@@ -195,8 +193,6 @@ pnpm lint && pnpm type-check
 
 **Agent (LiveKit Worker)**
 ```bash
-# Build Docker image
-docker build -f agent/Dockerfile -t job-copilot-agent .
 
 # Deploy to Render, Railway, Fly.io, or K8s
 # Set env vars from .env
@@ -291,7 +287,7 @@ TTS Result + Download Link
 - **Scalability**: Ready for multi-user, distributed deployment
 - **Modularity**: Each service is independent and composable
 - **Testing**: Vitest configured, agent tests included
-- **CI/CD Ready**: Docker, ESLint, TypeScript strict mode
+- **CI/CD Ready**: ESLint, TypeScript strict mode
 
 ---
 

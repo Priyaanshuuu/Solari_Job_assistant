@@ -65,10 +65,9 @@ A **production-ready, voice-first job search automation platform** with three de
 ## 🚀 Deployment Ready
 
 ### What's Included
-- ✅ **Docker Image** - Production container for agent
+- ✅ **Direct Node.js Deployment** - Production agent package
 - ✅ **Environment Config** - 15+ variables documented
 - ✅ **Database Schema** - PostgreSQL with Prisma
-- ✅ **Health Checks** - Docker health checks configured
 - ✅ **Type Safety** - Full TypeScript strict mode
 - ✅ **Error Handling** - Logging at every step
 - ✅ **Testing Framework** - Vitest configured
@@ -197,7 +196,7 @@ A **production-ready, voice-first job search automation platform** with three de
 1. Run `pnpm install`
 2. Copy `.env.example` → `.env`
 3. Add your API keys
-4. Run `docker-compose up -d postgres`
+4. Ensure PostgreSQL is reachable at `DATABASE_URL`
 5. Run `pnpm -F lib-db prisma migrate dev`
 6. Run `pnpm dev`
 

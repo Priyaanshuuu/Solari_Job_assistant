@@ -322,7 +322,7 @@ Before deploying to production:
 - [ ] Linting passes: `pnpm lint`
 - [ ] Environment variables reviewed for secrets
 - [ ] API keys are not committed to git
-- [ ] Docker image builds: `docker build -f agent/Dockerfile .`
+- [ ] Agent package checks: `pnpm --filter agent-starter-node typecheck`
 - [ ] CORS configured for web/agent communication
 
 ---

@@ -35,7 +35,6 @@ job-copilot-solari/
 │   │       ├── job-board-parsers.ts  # HTML parsing
 │   │       ├── pipeline.ts       # Job discovery flow
 │   │       └── resume-pipeline.ts # Resume flow
-│   ├── Dockerfile                # Container image
 │   ├── package.json              # Dependencies
 │   └── tsconfig.json             # TypeScript config
 │
@@ -80,10 +79,7 @@ job-copilot-solari/
 │   ├── eslint.config.ts          # Linting rules
 │   ├── vitest.config.ts          # Test config
 │   ├── .prettierrc               # Code formatting
-│   ├── docker-compose.yml        # Local database
-│   ├── .dockerignore             # Docker ignore
 │   ├── .gitignore                # Git ignore
-│   └── Dockerfile                # Agent container
 │
 └── 📚 Documentation Files
     ├── README.md                 # Quick start
@@ -109,8 +105,10 @@ job-copilot-solari/
 
 **🔧 DevOps/Ops**
 1. Read: [BUILD_CHECKLIST.md](BUILD_CHECKLIST.md)
-2. Setup: PostgreSQL + Redis via docker-compose
-3. Deploy: Agent via Dockerfile, Web via Next.js build
+2. Setup: Use managed PostgreSQL and Redis services
+3. Deploy: Agent and Web directly with their Node.js build commands
+2. Setup: Use managed PostgreSQL and Redis services
+3. Deploy: Agent and Web directly with their Node.js build commands
 4. Monitor: Logs via Pino logger
 
 **📊 Product Managers**
@@ -137,7 +135,6 @@ cp .env.example .env
 # Edit .env with your API keys
 
 # 3. Start database
-docker-compose up -d postgres
 
 # 4. Run migrations
 pnpm -F lib-db prisma migrate dev
@@ -170,7 +167,7 @@ See: [DEVELOPMENT_GUIDE.md](DEVELOPMENT_GUIDE.md#database-workflow)
 **Deploying to Production**
 1. Follow: [BUILD_CHECKLIST.md](BUILD_CHECKLIST.md#deployment-checklist)
 2. Build: `pnpm build`
-3. Push: Docker image or Next.js to platform
+3. Push: Node.js package or Next.js build to platform
 4. Test: Health checks + endpoints
 
 See: [BUILD_CHECKLIST.md](BUILD_CHECKLIST.md#deployment-checklist)
@@ -221,7 +218,6 @@ See: [BUILD_CHECKLIST.md](BUILD_CHECKLIST.md#deployment-checklist)
 - **Environment**: [`.env.example`](.env.example)
 - **Database Schema**: [`lib-db/prisma/schema.prisma`](lib-db/prisma/schema.prisma)
 - **Monorepo**: [`pnpm-workspace.yaml`](pnpm-workspace.yaml)
-- **Build**: [`Dockerfile`](Dockerfile), [`docker-compose.yml`](docker-compose.yml)
 
 ---
 
@@ -318,7 +314,6 @@ A: Yes! See [DEVELOPMENT_GUIDE.md](DEVELOPMENT_GUIDE.md#customizing-llm-prompts)
 | Database Layer | ✅ Complete | Yes |
 | Integrations | ✅ Complete | Yes |
 | Documentation | ✅ Complete | Yes |
-| Docker Setup | ✅ Complete | Yes |
 | Testing Config | ✅ Complete | Yes |
 | Linting Config | ✅ Complete | Yes |
 
