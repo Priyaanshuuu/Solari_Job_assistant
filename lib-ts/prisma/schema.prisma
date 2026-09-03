@@ -16,6 +16,8 @@ model User {
   name      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  tailoredResumes TailoredResume[]
 }
 
 model JobPosting {
@@ -25,9 +27,15 @@ model JobPosting {
   company     String
   location    String?
   url         String   @unique
+  description String?
+  relevanceScore Float?
+  atsKeywordMatch Float?
+  postedDate  DateTime?
   status      String   @default("NEW")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  tailoredResumes TailoredResume[]
 }
 
 model TailoredResume {
@@ -36,6 +44,13 @@ model TailoredResume {
   jobId       String
   filePath    String?
   summary     String?
+  atsScore    Float?
+  matchedKeywords Json?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job         JobPosting @relation(fields: [jobId], references: [jobId], onDelete: Cascade)
+
+  @@unique([userId, jobId])
 }
