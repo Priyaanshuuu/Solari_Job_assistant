@@ -5,7 +5,8 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Room } from "livekit-client";
 import VoiceOrb from "@/components/VoiceOrb";
 import TranscriptPanel from "@/components/TranscriptPanel";
 import ResultsCard from "@/components/ResultsCard";
@@ -16,6 +17,65 @@ export default function CopilotPage() {
   const [results, setResults] = useState<any[]>([]);
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
   const [status, setStatus] = useState("Ready for your next search.");
+  const [connectionState, setConnectionState] = useState<"offline" | "connecting" | "connected">("offline");
+  const roomRef = useRef<Room | null>(null);
+
+  useEffect(() => {
+    return () => {
+      roomRef.current?.disconnect();
+    };
+  }, []);
+
+  const connectToLiveKit = async () => {
+    if (roomRef.current?.state === "connected") {
+      await roomRef.current.localParticipant.setMicrophoneEnabled(true);
+      return;
+    }
+
+    const liveKitUrl = process.env.NEXT_PUBLIC_LIVEKIT_URL;
+    if (!liveKitUrl) {
+      setStatus("LiveKit is not configured. Add NEXT_PUBLIC_LIVEKIT_URL to .env.local.");
+      return;
+    }
+
+    setConnectionState("connecting");
+    try {
+      const participantName = `user-${crypto.randomUUID().slice(0, 8)}`;
+      const roomName = `job-copilot-${crypto.randomUUID()}`;
+      const response = await fetch("/api/livekit-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ roomName, participantName }),
+      });
+
+      if (!response.ok) {
+        throw new Error("LiveKit token request failed");
+      }
+
+      const { token } = await response.json();
+      const room = new Room();
+      await room.connect(liveKitUrl, token);
+      await room.localParticipant.setMicrophoneEnabled(true);
+      roomRef.current = room;
+      setConnectionState("connected");
+      setStatus("Connected. Your request is being heard.");
+    } catch (error) {
+      console.error("LiveKit connection error:", error);
+      setConnectionState("offline");
+      setStatus("LiveKit could not connect. Check your credentials and try again.");
+    }
+  };
+
+  const disconnectFromLiveKit = async () => {
+    const room = roomRef.current;
+    if (!room) return;
+
+    await room.localParticipant.setMicrophoneEnabled(false);
+    await room.disconnect();
+    roomRef.current = null;
+    setConnectionState("offline");
+    setStatus("Ready for your next search.");
+  };
 
   const handleQuickAction = (prompt: string) => {
     setTranscript(prompt);
@@ -43,8 +103,14 @@ export default function CopilotPage() {
               <div className="mb-8">
                 <VoiceOrb
                   isListening={isListening}
-                  onStart={() => setIsListening(true)}
-                  onStop={() => setIsListening(false)}
+                  onStart={() => {
+                    setIsListening(true);
+                    void connectToLiveKit();
+                  }}
+                  onStop={() => {
+                    setIsListening(false);
+                    void disconnectFromLiveKit();
+                  }}
                   onTranscript={setTranscript}
                   onResults={setResults}
                   onError={(message) => setStatus(message)}
@@ -52,6 +118,10 @@ export default function CopilotPage() {
               </div>
 
               {/* Quick Actions */}
+              <div className="mb-5 flex items-center justify-center gap-2 text-xs text-slate-400">
+                <span className={`h-2 w-2 rounded-full ${connectionState === "connected" ? "bg-green-400" : connectionState === "connecting" ? "bg-yellow-400" : "bg-slate-500"}`} />
+                {connectionState === "connected" ? "LiveKit connected" : connectionState === "connecting" ? "Connecting to LiveKit..." : "LiveKit offline"}
+              </div>
               <div className="space-y-2">
                 <button onClick={() => handleQuickAction("Find new backend roles in my preferred locations.")} className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium transition">
                   Find New Jobs
