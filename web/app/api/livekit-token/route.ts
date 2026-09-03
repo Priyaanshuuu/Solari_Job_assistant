@@ -6,6 +6,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AccessToken } from "livekit-server-sdk";
 
+async function resolveRegionalUrl(livekitUrl: string, token: string) {
+  const settingsUrl = livekitUrl.replace(/^ws/, "http") + "/settings/regions";
+  const response = await fetch(settingsUrl, {
+    headers: { authorization: `Bearer ${token}` },
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error(`LiveKit region lookup failed with status ${response.status}`);
+  }
+
+  const settings = (await response.json()) as {
+    regions?: Array<{ url?: string }>;
+  };
+  const regionalUrl = settings.regions?.find((region) => region.url)?.url;
+  if (!regionalUrl) throw new Error("LiveKit returned no available regions");
+
+  return regionalUrl.replace(/^http/, "ws");
+}
+
 export async function POST(request: NextRequest) {
   const requestId = crypto.randomUUID();
 
@@ -50,10 +70,14 @@ export async function POST(request: NextRequest) {
       roomJoin: true,
     });
 
-    const token = at.toJwt();
+    const token = await at.toJwt();
+    const serverUrl = await resolveRegionalUrl(
+      process.env.LIVEKIT_URL ?? "",
+      token,
+    );
 
     return NextResponse.json(
-      { token },
+      { token, serverUrl },
       { headers: { "Cache-Control": "no-store" } },
     );
   } catch (error) {

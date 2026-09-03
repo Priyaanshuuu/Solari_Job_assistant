@@ -61,9 +61,9 @@ export default function CopilotPage() {
         throw new Error("LiveKit token request failed");
       }
 
-      const { token } = await response.json();
+      const { token, serverUrl } = await response.json();
       const room = new Room();
-      await room.connect(liveKitUrl, token);
+      await room.connect(serverUrl ?? liveKitUrl, token);
       await room.localParticipant.setMicrophoneEnabled(true);
       roomRef.current = room;
       setConnectionState("connected");
