@@ -17,9 +17,8 @@ Output:
 import json
 import sys
 import hashlib
-import re
 import yaml
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Dict, Any
 
 # This will be called by Solari sandbox
@@ -29,20 +28,23 @@ def main(raw_listings: List[Dict], profile: str) -> List[Dict]:
     """
     try:
         # Parse profile YAML
-        profile_data = yaml.safe_load(profile)
+        profile_data = yaml.safe_load(profile) or {}
         
         processed = []
         
         for listing in raw_listings:
             # Generate stable job_id from URL hash
-            job_id = generate_job_id(listing['url'])
+            job_id = generate_job_id(listing.get('url', ''))
+            job_description = listing.get('job_description', '')
+            title = listing.get('title', '')
+            location = listing.get('location', '')
             
             # Compute relevance score based on profile
             relevance_score = compute_relevance(listing, profile_data)
             
             # Compute ATS keyword match
             ats_match = compute_ats_keywords(
-                listing['job_description'],
+                job_description,
                 profile_data.get('preferred_tech_stack', []),
                 profile_data.get('priority_keywords', [])
             )
@@ -51,20 +53,21 @@ def main(raw_listings: List[Dict], profile: str) -> List[Dict]:
             # For now, mark all as 'new'
             status = 'new'
             
+            timestamp = datetime.now(timezone.utc).isoformat()
             processed_item = {
                 'job_id': job_id,
                 'url': listing['url'],
-                'board': listing['board'],
-                'title': listing['title'],
-                'company': listing['company'],
-                'location': listing['location'],
-                'posted_date': listing['posted_date'],
-                'job_description': listing['job_description'],
+                'board': listing.get('board', 'unknown'),
+                'title': title,
+                'company': listing.get('company', 'Unknown company'),
+                'location': location or 'Location not specified',
+                'posted_date': listing.get('posted_date'),
+                'job_description': job_description,
                 'relevance_score': relevance_score,
                 'ats_keyword_match': ats_match,
                 'status': status,
-                'created_at': datetime.utcnow().isoformat(),
-                'updated_at': datetime.utcnow().isoformat(),
+                'created_at': timestamp,
+                'updated_at': timestamp,
             }
             
             processed.append(processed_item)
@@ -96,22 +99,22 @@ def compute_relevance(listing: Dict, profile: Dict) -> float:
     
     # Role match
     desired_roles = profile.get('desired_roles', [])
-    if any(role.lower() in listing['title'].lower() for role in desired_roles):
+    if any(role.lower() in listing.get('title', '').lower() for role in desired_roles):
         score += 20
     
     # Location match
     desired_locations = profile.get('desired_locations', [])
-    if any(loc.lower() in listing['location'].lower() for loc in desired_locations):
+    if any(loc.lower() in listing.get('location', '').lower() for loc in desired_locations):
         score += 15
     
     # Remote bonus
-    if 'remote' in listing['location'].lower():
+    if 'remote' in listing.get('location', '').lower():
         if profile.get('willing_to_relocate'):
             score += 10
     
     # Keyword match
     priority_keywords = profile.get('priority_keywords', [])
-    jd = listing['job_description'].lower()
+    jd = listing.get('job_description', '').lower()
     keyword_hits = sum(1 for kw in priority_keywords if kw.lower() in jd)
     score += min(keyword_hits * 5, 15)
     
