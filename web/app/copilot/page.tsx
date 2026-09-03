@@ -11,10 +11,19 @@ import VoiceOrb from "@/components/VoiceOrb";
 import TranscriptPanel from "@/components/TranscriptPanel";
 import ResultsCard from "@/components/ResultsCard";
 
+interface JobResult {
+  job_id: string;
+  title: string;
+  company: string;
+  location: string;
+  relevance_score: number;
+  ats_keyword_match?: number;
+  status: "new" | "seen" | "applied" | "rejected";
+}
+
 export default function CopilotPage() {
-  const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState("");
-  const [results, setResults] = useState<any[]>([]);
+  const [results] = useState<JobResult[]>([]);
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
   const [status, setStatus] = useState("Ready for your next search.");
   const [connectionState, setConnectionState] = useState<"offline" | "connecting" | "connected">("offline");
@@ -102,17 +111,13 @@ export default function CopilotPage() {
               {/* Voice Orb */}
               <div className="mb-8">
                 <VoiceOrb
-                  isListening={isListening}
                   onStart={() => {
-                    setIsListening(true);
                     void connectToLiveKit();
                   }}
                   onStop={() => {
-                    setIsListening(false);
                     void disconnectFromLiveKit();
                   }}
                   onTranscript={setTranscript}
-                  onResults={setResults}
                   onError={(message) => setStatus(message)}
                 />
               </div>

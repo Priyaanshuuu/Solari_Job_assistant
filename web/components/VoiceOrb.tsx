@@ -44,16 +44,13 @@ declare global {
 }
 
 interface VoiceOrbProps {
-  isListening: boolean;
   onStart: () => void;
   onStop: () => void;
   onTranscript: (text: string) => void;
-  onResults: (results: any[]) => void;
   onError: (message: string) => void;
 }
 
 export default function VoiceOrb({
-  isListening,
   onStart,
   onStop,
   onTranscript,
