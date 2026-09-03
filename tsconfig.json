@@ -26,9 +26,9 @@
     "isolatedModules": true,
     "baseUrl": ".",
     "paths": {
-      "@lib-ts/*": ["lib-ts/src/*"],
-      "@agent/*": ["agent-starter-node/src/*"],
-      "@web/*": ["web/src/*"]
+      "@lib-ts/*": ["./lib-ts/src/*"],
+      "@agent/*": ["./agent-starter-node/src/*"],
+      "@web/*": ["./web/src/*"]
     }
   },
   "include": ["agent-starter-node", "web", "lib-ts"],

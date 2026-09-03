@@ -1,69 +1,75 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <main className="min-h-screen bg-[#101719] px-5 py-5 text-[#f2f5ef] sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-7xl">
+        <header className="flex items-center justify-between border-b border-white/10 pb-5">
+          <Link href="/" className="flex items-center gap-3 text-sm font-semibold tracking-[0.18em] text-[#f2f5ef]">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#ee7655] text-base text-[#101719]">S</span>
+            SOLARI / COPILOT
+          </Link>
+          <div className="flex items-center gap-3 text-xs text-[#aebbb5]">
+            <span className="hidden sm:inline">LOCAL WORKSPACE</span>
+            <span className="h-2 w-2 rounded-full bg-[#75d19b]" aria-label="System ready" />
+          </div>
+        </header>
+
+        <section className="grid gap-10 py-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-end lg:py-20">
+          <div>
+            <p className="mb-5 text-xs font-semibold tracking-[0.22em] text-[#ee7655]">JOB SEARCH, WITH A SECOND BRAIN</p>
+            <h1 className="max-w-3xl text-5xl font-semibold leading-[0.98] tracking-[-0.04em] sm:text-7xl">
+              Find the roles worth your attention.
+            </h1>
+            <p className="mt-6 max-w-xl text-base leading-7 text-[#aebbb5] sm:text-lg">
+              Solari searches the web, keeps your shortlist focused, and shapes your resume around the opportunity in front of you.
+            </p>
+            <Link
+              href="/copilot"
+              className="mt-8 inline-flex items-center gap-3 rounded-full bg-[#ee7655] px-6 py-3 text-sm font-semibold text-[#101719] transition-transform hover:-translate-y-0.5"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+              Open copilot <span aria-hidden="true">-&gt;</span>
+            </Link>
+          </div>
+
+          <div className="border-l border-[#ee7655]/50 pl-6 lg:mb-2">
+            <p className="text-xs font-semibold tracking-[0.18em] text-[#aebbb5]">TODAY&apos;S BRIEF</p>
+            <p className="mt-4 text-4xl font-semibold tracking-[-0.03em]">Ready when you are.</p>
+            <p className="mt-3 text-sm leading-6 text-[#aebbb5]">Start with a spoken request or use the copilot workspace to review your next move.</p>
+          </div>
+        </section>
+
+        <section className="grid gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-3">
+          {[
+            ["12", "saved opportunities", "from your last search"],
+            ["04", "resume drafts", "ready to tailor"],
+            ["86%", "profile coverage", "based on your current resume"],
+          ].map(([value, label, detail]) => (
+            <div key={label} className="bg-[#151e20] p-6">
+              <p className="text-3xl font-semibold tracking-[-0.03em] text-[#f2f5ef]">{value}</p>
+              <p className="mt-3 text-sm font-medium text-[#f2f5ef]">{label}</p>
+              <p className="mt-1 text-xs text-[#7f918a]">{detail}</p>
+            </div>
+          ))}
+        </section>
+
+        <section className="grid gap-8 border-b border-white/10 py-10 md:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <p className="text-xs font-semibold tracking-[0.18em] text-[#ee7655]">WORKFLOW</p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-[-0.02em]">One conversation, two useful outcomes.</h2>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="border-t border-white/20 pt-4">
+              <p className="text-sm font-semibold">01 / Discover</p>
+              <p className="mt-2 text-sm leading-6 text-[#aebbb5]">Search ATS boards through a voice request and keep the strongest matches together.</p>
+            </div>
+            <div className="border-t border-white/20 pt-4">
+              <p className="text-sm font-semibold">02 / Tailor</p>
+              <p className="mt-2 text-sm leading-6 text-[#aebbb5]">Turn a selected job into a focused resume draft without inventing experience.</p>
+            </div>
+          </div>
+        </section>
+      </div>
       </main>
-    </div>
   );
 }

@@ -16,6 +16,7 @@
     "@livekit/components-react": "^1.2.0",
     "@livekit/components-styles": "^1.2.0",
     "livekit-client": "^1.2.0",
+    "livekit-server-sdk": "^2.13.2",
     "@job-copilot/lib-ts": "workspace:*",
     "next": "16.3.4",
     "react": "19.2.8",

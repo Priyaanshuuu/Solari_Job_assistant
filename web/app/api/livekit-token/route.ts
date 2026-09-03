@@ -29,13 +29,14 @@ export async function POST(request: NextRequest) {
 
     const at = new AccessToken(apiKey, apiSecret, {
       identity: participantName,
-      grants: {
-        canPublish: true,
-        canPublishData: true,
-        canSubscribe: true,
-        room: roomName,
-        roomJoin: true,
-      },
+    });
+
+    at.addGrant({
+      canPublish: true,
+      canPublishData: true,
+      canSubscribe: true,
+      room: roomName,
+      roomJoin: true,
     });
 
     const token = at.toJwt();
