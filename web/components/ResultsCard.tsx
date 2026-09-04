@@ -11,6 +11,7 @@ interface ResultsCardProps {
     title: string;
     company: string;
     location: string;
+    url: string;
     relevance_score: number;
     ats_keyword_match?: number;
     status: "new" | "seen" | "applied" | "rejected";
@@ -52,6 +53,16 @@ export default function ResultsCard({
       </div>
 
       <p className="text-sm text-slate-400 mb-3">{job.location}</p>
+
+      <a
+        href={job.url}
+        target="_blank"
+        rel="noreferrer"
+        onClick={(event) => event.stopPropagation()}
+        className="mb-4 inline-block text-sm font-medium text-[#ee7655] hover:underline"
+      >
+        Open listing -&gt;
+      </a>
 
       <div className="flex gap-3 text-xs">
         <div>

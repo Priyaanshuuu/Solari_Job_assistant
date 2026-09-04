@@ -16,6 +16,7 @@ interface JobResult {
   title: string;
   company: string;
   location: string;
+  url: string;
   relevance_score: number;
   ats_keyword_match?: number;
   status: "new" | "seen" | "applied" | "rejected";
@@ -23,7 +24,7 @@ interface JobResult {
 
 export default function CopilotPage() {
   const [transcript, setTranscript] = useState("");
-  const [results] = useState<JobResult[]>([]);
+  const [results, setResults] = useState<JobResult[]>([]);
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
   const [status, setStatus] = useState("Ready for your next search.");
   const [connectionState, setConnectionState] = useState<"offline" | "connecting" | "connected">("offline");
@@ -63,6 +64,18 @@ export default function CopilotPage() {
 
       const { token, serverUrl } = await response.json();
       const room = new Room();
+      room.on("dataReceived", (payload, _participant, _kind, topic) => {
+        if (topic !== "job-results") return;
+        try {
+          const message = JSON.parse(new TextDecoder().decode(payload)) as { type?: string; listings?: JobResult[] };
+          if (message.type === "job-results") {
+            setResults(message.listings ?? []);
+            setStatus(`${message.listings?.length ?? 0} job openings found.`);
+          }
+        } catch {
+          setStatus("Received an invalid job-results message.");
+        }
+      });
       room.on("trackSubscribed", (track) => {
         if (track.kind === "audio") {
           const audioElement = track.attach();
