@@ -65,14 +65,27 @@ export default function CopilotPage() {
       const room = new Room();
       room.on("trackSubscribed", (track) => {
         if (track.kind === "audio") {
-          track.attach();
+          const audioElement = track.attach();
+          document.body.appendChild(audioElement);
+          setStatus("The agent is responding.");
         }
+      });
+      room.on("trackUnsubscribed", (track) => {
+        track.detach().forEach((element) => element.remove());
+      });
+      room.on("activeSpeakersChanged", (speakers) => {
+        if (speakers.some((speaker) => speaker !== room.localParticipant)) {
+          setStatus("The agent is responding.");
+        }
+      });
+      room.on("localAudioSilenceDetected", () => {
+        setStatus("No microphone audio detected. Check your microphone and try again.");
       });
       await room.connect(serverUrl ?? liveKitUrl, token);
       await room.localParticipant.setMicrophoneEnabled(true);
       roomRef.current = room;
       setConnectionState("connected");
-      setStatus("Connected. Your request is being heard.");
+      setStatus("Listening for your request.");
     } catch (error) {
       console.error("LiveKit connection error:", error);
       setConnectionState("offline");
@@ -122,6 +135,7 @@ export default function CopilotPage() {
                   onStop={() => {
                     void disconnectFromLiveKit();
                   }}
+                  onProcessing={() => setStatus("Request received. The agent is processing it.")}
                   onTranscript={setTranscript}
                   onError={(message) => setStatus(message)}
                 />
@@ -177,11 +191,9 @@ export default function CopilotPage() {
               )}
 
               {/* Status Message */}
-              {!results.length && !transcript && (
-                <div className="bg-slate-800 rounded-lg p-8 border border-slate-700 text-center">
-                  <p className="text-slate-400">{status}</p>
-                </div>
-              )}
+              <div className="bg-slate-800 rounded-lg p-8 border border-slate-700 text-center">
+                <p className="text-slate-400">{status}</p>
+              </div>
             </div>
           </div>
         </div>

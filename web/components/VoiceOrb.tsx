@@ -46,6 +46,7 @@ declare global {
 interface VoiceOrbProps {
   onStart: () => void;
   onStop: () => void;
+  onProcessing: () => void;
   onTranscript: (text: string) => void;
   onError: (message: string) => void;
 }
@@ -53,6 +54,7 @@ interface VoiceOrbProps {
 export default function VoiceOrb({
   onStart,
   onStop,
+  onProcessing,
   onTranscript,
   onError,
 }: VoiceOrbProps) {
@@ -90,6 +92,7 @@ export default function VoiceOrb({
       };
       recognition.onend = () => {
         setIsRecording(false);
+        onProcessing();
       };
 
       recognitionRef.current = recognition;
