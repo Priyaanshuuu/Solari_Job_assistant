@@ -63,6 +63,11 @@ export default function CopilotPage() {
 
       const { token, serverUrl } = await response.json();
       const room = new Room();
+      room.on("trackSubscribed", (track) => {
+        if (track.kind === "audio") {
+          track.attach();
+        }
+      });
       await room.connect(serverUrl ?? liveKitUrl, token);
       await room.localParticipant.setMicrophoneEnabled(true);
       roomRef.current = room;

@@ -4,7 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { AccessToken } from "livekit-server-sdk";
+import { AccessToken, RoomAgentDispatch, RoomConfiguration } from "livekit-server-sdk";
 
 async function resolveRegionalUrl(livekitUrl: string, token: string) {
   const settingsUrl = livekitUrl.replace(/^ws/, "http") + "/settings/regions";
@@ -69,6 +69,10 @@ export async function POST(request: NextRequest) {
       room: roomName,
       roomJoin: true,
     });
+
+    const roomConfig = new RoomConfiguration();
+    roomConfig.agents = [new RoomAgentDispatch({ agentName: "my-agent" })];
+    at.roomConfig = roomConfig;
 
     const token = await at.toJwt();
     const serverUrl = await resolveRegionalUrl(

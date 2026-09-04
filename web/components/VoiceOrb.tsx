@@ -86,12 +86,10 @@ export default function VoiceOrb({
       };
       recognition.onerror = (event) => {
         setIsRecording(false);
-        onStop();
         onError(event.error === "not-allowed" ? "Microphone access was denied." : "We could not hear that. Please try again.");
       };
       recognition.onend = () => {
         setIsRecording(false);
-        onStop();
       };
 
       recognitionRef.current = recognition;
